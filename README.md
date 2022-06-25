@@ -2,7 +2,7 @@
 
 A VRChat mod that toggles specified effects in a World's default Post-processing Profile.
 
-Ever wanted to deactivate that one annoying Post-processing Effect in every single world? (Bloom ***COUGH COUGH***)
+Ever wanted to deactivate that one annoying Post-processing Effect in every single world? (Bloom... ***COUGH COUGH***)
 
 Well, this mod makes you able to deactivate that one Effect!
 
@@ -13,7 +13,7 @@ It lets you deactivate following Effects:
 - Chromatic Aberration
 - Color Grading
 - Depth of Field
-- GrainState
+- Grain
 - Lens Distortion
 - Motion Blur
 - Screen Space Reflections
