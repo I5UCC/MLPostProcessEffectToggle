@@ -1,3 +1,3 @@
 # WorldEffectToggle
 
-Universal Melonloader mod that toggles specified effects in the Games Default Postprocessing Profile. 
+A VRChat mod that toggles specified effects in a World's default Post-processing Profile.
