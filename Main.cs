@@ -80,7 +80,9 @@ namespace WorldPostProcessToggle
         {
             if (buildIndex == -1)
             {
-                PostprocessingState_OnValueChanged();
+                if (PostprocessingState.Value)
+                    PostprocessingState_OnValueChanged();
+                    
                 AOState_OnValueChanged();
                 AutoExposureState_OnValueChanged();
                 BloomState_OnValueChanged();
@@ -100,7 +102,10 @@ namespace WorldPostProcessToggle
             if (!SettingChanged) return;
 
             string msg = "Re-enabled some Postprocessing effects. Rejoin the world for changes to take effect.";
-            VRCUiManager.prop_VRCUiManager_0.field_Private_List_1_String_0.Add(msg);
+
+            if (MelonUtils.CurrentGameAttribute.Name.ToLower() == "vrchat")
+                VRCUiManager.prop_VRCUiManager_0.field_Private_List_1_String_0.Add(msg);
+
             mlog.Warning(msg);
 
             SettingChanged = false;
@@ -254,7 +259,10 @@ namespace WorldPostProcessToggle
             foreach (Camera cam in Camera.allCameras)
             {
                 if (cam.GetComponent<PostProcessLayer>() != null)
+                {
                     cam.GetComponent<PostProcessLayer>().enabled = !PostprocessingState.Value;
+                    mlog.Msg(String.Format("PostProcessing set to {0}", PostprocessingState.Value ? "OFF" : "ON"));
+                }
             }
         }
     }
