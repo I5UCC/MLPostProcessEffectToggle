@@ -3,11 +3,11 @@ using MelonLoader;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
-namespace WorldPostProcessToggle
+namespace WorldEffectToggle
 {
     public class Main : MelonMod
     {
-        internal static readonly MelonLogger.Instance mlog = new MelonLogger.Instance("WorldPostProcessToggle", ConsoleColor.DarkGreen);
+        internal static readonly MelonLogger.Instance mlog = new MelonLogger.Instance("WorldEffectToggle", ConsoleColor.DarkGreen);
 
         public static MelonPreferences_Category Category;
 
@@ -29,10 +29,10 @@ namespace WorldPostProcessToggle
 
         public override void OnApplicationStart()
         {
-            Category = MelonPreferences.CreateCategory("WorldPostProcessToggle");
+            Category = MelonPreferences.CreateCategory("WorldEffectToggle");
 
             PostprocessingState = Category.CreateEntry("Disable PostProcessing", false);
-            PostprocessingState.OnValueChanged += PostprocessingState_OnValueChanged;
+            PostprocessingState.OnValueChanged += TogglePP;
 
             AOState = Category.CreateEntry("Disable Ambient Occlusion", false);
             AOState.OnValueChanged += AOState_OnValueChanged;
@@ -69,20 +69,13 @@ namespace WorldPostProcessToggle
 
         }
 
-        private void PostprocessingState_OnValueChanged(bool arg1 = false, bool arg2 = false) => TogglePP();
-
-        private void Changed(bool arg1 = false, bool arg2 = false)
-        {
-            if (arg1) SettingChanged = true;
-        }
-
         public override void OnSceneWasLoaded(int buildIndex, string sceneName)
         {
             if (buildIndex == -1)
             {
                 if (PostprocessingState.Value)
-                    PostprocessingState_OnValueChanged();
-                    
+                    TogglePP();
+
                 AOState_OnValueChanged();
                 AutoExposureState_OnValueChanged();
                 BloomState_OnValueChanged();
@@ -102,10 +95,7 @@ namespace WorldPostProcessToggle
             if (!SettingChanged) return;
 
             string msg = "Re-enabled some Postprocessing effects. Rejoin the world for changes to take effect.";
-
-            if (MelonUtils.CurrentGameAttribute.Name.ToLower() == "vrchat")
-                VRCUiManager.prop_VRCUiManager_0.field_Private_List_1_String_0.Add(msg);
-
+            VRCUiManager.prop_VRCUiManager_0.field_Private_List_1_String_0.Add(msg);
             mlog.Warning(msg);
 
             SettingChanged = false;
@@ -113,148 +103,126 @@ namespace WorldPostProcessToggle
 
         private void VignetteState_OnValueChanged(bool arg1 = false, bool arg2 = false)
         {
+            SettingChanged = arg1;
             if (VignetteState.Value)
             {
                 mlog.Msg("Vignette OFF");
                 foreach (Vignette x in Resources.FindObjectsOfTypeAll<Vignette>())
-                {
-                    x.enabled.Override(arg1);
-                }
+                    x.enabled.Override(false);
             }
-            Changed(arg1, arg2);
         }
 
         private void ScreenSpaceReflectionsState_OnValueChanged(bool arg1 = false, bool arg2 = false)
         {
+            SettingChanged = arg1;
             if (ScreenSpaceReflectionsState.Value)
             {
                 mlog.Msg("Screen Space Reflections OFF");
                 foreach (ScreenSpaceReflections x in Resources.FindObjectsOfTypeAll<ScreenSpaceReflections>())
-                {
-                    x.enabled.Override(arg1);
-                }
+                    x.enabled.Override(false);
             }
-            Changed(arg1, arg2);
         }
 
         private void MotionBlurState_OnValueChanged(bool arg1 = false, bool arg2 = false)
         {
+            SettingChanged = arg1;
             if (MotionBlurState.Value)
             {
                 mlog.Msg("Lens Distortion OFF");
                 foreach (LensDistortion x in Resources.FindObjectsOfTypeAll<LensDistortion>())
-                {
-                    x.enabled.Override(arg1);
-                }
+                    x.enabled.Override(false);
             }
-            Changed(arg1, arg2);
         }
 
         private void LensDistortionState_OnValueChanged(bool arg1 = false, bool arg2 = false)
         {
+            SettingChanged = arg1;
             if (LensDistortionState.Value)
             {
                 mlog.Msg("Lens Distortion OFF");
                 foreach (LensDistortion x in Resources.FindObjectsOfTypeAll<LensDistortion>())
-                {
-                    x.enabled.Override(arg1);
-                }
+                    x.enabled.Override(false);
             }
-            Changed(arg1, arg2);
         }
 
         private void GrainState_OnValueChanged(bool arg1 = false, bool arg2 = false)
         {
+            SettingChanged = arg1;
             if (GrainState.Value)
             {
                 mlog.Msg("Grain OFF");
                 foreach (Grain x in Resources.FindObjectsOfTypeAll<Grain>())
-                {
-                    x.enabled.Override(arg1);
-                }
+                    x.enabled.Override(false);
             }
-            Changed(arg1, arg2);
         }
 
         private void DOFState_OnValueChanged(bool arg1 = false, bool arg2 = false)
         {
+            SettingChanged = arg1;
             if (DOFState.Value)
             {
                 mlog.Msg("Depth Of Field OFF");
                 foreach (DepthOfField x in Resources.FindObjectsOfTypeAll<DepthOfField>())
-                {
-                    x.enabled.Override(arg1);
-                }
+                    x.enabled.Override(false);
             }
-            Changed(arg1, arg2);
         }
 
         private void ColorGradingState_OnValueChanged(bool arg1 = false, bool arg2 = false)
         {
+            SettingChanged = arg1;
             if (ColorGradingState.Value)
             {
                 mlog.Msg("Color Grading OFF");
                 foreach (ColorGrading x in Resources.FindObjectsOfTypeAll<ColorGrading>())
-                {
-                    x.enabled.Override(arg1);
-                }
+                    x.enabled.Override(false);
             }
-            Changed(arg1, arg2);
         }
 
         private void ChromaticAberrationState_OnValueChanged(bool arg1 = false, bool arg2 = false)
         {
+            SettingChanged = arg1;
             if (ChromaticAberrationState.Value)
             {
                 mlog.Msg("Chromatic Aberration OFF");
                 foreach (ChromaticAberration x in Resources.FindObjectsOfTypeAll<ChromaticAberration>())
-                {
-                    x.enabled.Override(arg1);
-                }
+                    x.enabled.Override(false);
             }
-            Changed(arg1, arg2);
         }
 
         private void BloomState_OnValueChanged(bool arg1 = false, bool arg2 = false)
         {
+            SettingChanged = arg1;
             if (BloomState.Value)
             {
                 mlog.Msg("Bloom OFF");
                 foreach (Bloom x in Resources.FindObjectsOfTypeAll<Bloom>())
-                {
-                    x.enabled.Override(arg1);
-                }
+                    x.enabled.Override(false);
             }
-            Changed(arg1, arg2);
         }
 
         private void AutoExposureState_OnValueChanged(bool arg1 = false, bool arg2 = false)
         {
+            SettingChanged = arg1;
             if (AutoExposureState.Value)
             {
                 mlog.Msg("AutoExposure OFF");
                 foreach (AutoExposure x in Resources.FindObjectsOfTypeAll<AutoExposure>())
-                {
-                    x.enabled.Override(arg1);
-                }
+                    x.enabled.Override(false);
             }
-            Changed(arg1, arg2);
         }
 
         private void AOState_OnValueChanged(bool arg1 = false, bool arg2 = false)
         {
+            SettingChanged = arg1;
             if (AOState.Value)
             {
                 mlog.Msg("AO set to OFF");
                 foreach (AmbientOcclusion x in Resources.FindObjectsOfTypeAll<AmbientOcclusion>())
-                {
-                    x.enabled.Override(arg1);
-                }
+                    x.enabled.Override(false);
             }
-            Changed(arg1, arg2);
         }
 
-        private void TogglePP()
+        private void TogglePP(bool arg1 = false, bool arg2 = false)
         {
             foreach (Camera cam in Camera.allCameras)
             {
