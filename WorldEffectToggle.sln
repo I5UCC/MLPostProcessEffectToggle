@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32407.337
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldPostProcessToggle", "WorldPostProcessToggle.csproj", "{A4016EEC-D63A-4D43-83D4-C55D3F5F8FAF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldEffectToggle", "WorldEffectToggle.csproj", "{A4016EEC-D63A-4D43-83D4-C55D3F5F8FAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
