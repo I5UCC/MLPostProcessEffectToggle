@@ -26,13 +26,32 @@ namespace WorldEffectToggle
         public static MelonPreferences_Entry<bool> VignetteState;
 
         public static bool SettingChanged = false;
+        public static bool IsComponentToggleInstalled = false;
 
         public override void OnApplicationStart()
         {
             Category = MelonPreferences.CreateCategory("WorldEffectToggle");
 
-            PostprocessingState = Category.CreateEntry("Disable PostProcessing", false);
-            PostprocessingState.OnValueChanged += TogglePP;
+            foreach (var m in MelonHandler.Mods)
+            {
+                if (m.Info.Name == "ComponentToggle")
+                {
+                    mlog.Msg(ConsoleColor.Yellow, "Found ComponentToggle Mod. Disabling Post Processing Toggle.");
+                    IsComponentToggleInstalled = true;
+                    break;
+                }
+            }
+
+            CreateMelonPreferences();
+        }
+
+        private void CreateMelonPreferences()
+        {
+            if (!IsComponentToggleInstalled)
+            {
+                PostprocessingState = Category.CreateEntry("Disable PostProcessing", false);
+                PostprocessingState.OnValueChanged += TogglePP;
+            }
 
             AOState = Category.CreateEntry("Disable Ambient Occlusion", false);
             AOState.OnValueChanged += AOState_OnValueChanged;
@@ -66,14 +85,13 @@ namespace WorldEffectToggle
 
             VignetteState = Category.CreateEntry("Disable Vignette", false);
             VignetteState.OnValueChanged += VignetteState_OnValueChanged;
-
         }
 
         public override void OnSceneWasLoaded(int buildIndex, string sceneName)
         {
             if (buildIndex == -1)
             {
-                if (PostprocessingState.Value)
+                if (!IsComponentToggleInstalled && PostprocessingState.Value)
                     TogglePP();
 
                 AOState_OnValueChanged();
@@ -94,9 +112,9 @@ namespace WorldEffectToggle
         {
             if (!SettingChanged) return;
 
-            string msg = "Re-enabled some Postprocessing effects. Rejoin the world for changes to take effect.";
+            string msg = "Re-enabled some Postprocessing effects. Rejoin or change world for changes to take effect.";
             VRCUiManager.prop_VRCUiManager_0.field_Private_List_1_String_0.Add(msg);
-            mlog.Warning(msg);
+            mlog.Msg(ConsoleColor.Yellow, msg);
 
             SettingChanged = false;
         }
