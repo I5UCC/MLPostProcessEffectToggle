@@ -1,3 +1,5 @@
+# Due to VRChat deciding to implement EAC into their game, this mod does not work anymore
+
 # WorldEffectToggle
 
 A VRChat mod that toggles specified effects in a World's default Post-processing Profile.
